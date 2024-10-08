@@ -52,13 +52,15 @@ public class ItemServiceIMPL implements ItemService {
 
     @Override
     public void updateItem(String code, ItemDTO itemDTO) {
-        Optional<ItemEntity> tmpItemEntity= itemDAO.findById(code);
-        if(!tmpItemEntity.isPresent()){
+        Optional<ItemEntity> tmpItemEntity = itemDAO.findById(code);
+        if (!tmpItemEntity.isPresent()) {
+            logger.warn("Item not found for update: {}", code);
             throw new ItemNotFoundException("Item not found");
-        }else {
+        } else {
             tmpItemEntity.get().setDescription(itemDTO.getDescription());
             tmpItemEntity.get().setPrice(itemDTO.getPrice());
             tmpItemEntity.get().setQty(itemDTO.getQty());
+            logger.info("Item updated successfully: {}", code);
         }
     }
 

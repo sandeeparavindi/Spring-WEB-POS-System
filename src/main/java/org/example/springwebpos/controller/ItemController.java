@@ -49,14 +49,18 @@ public class ItemController {
     @PatchMapping(value = "/{code}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateNote(@PathVariable ("code") String itemCode, @RequestBody ItemDTO item) {
         try {
-            if (item == null && (itemCode == null || item.equals(""))) {
+            if (item == null || itemCode == null || itemCode.isEmpty()) {
+                logger.warn("Invalid update request for itemCode: {}", itemCode);
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             itemService.updateItem(itemCode, item);
+            logger.info("Item updated successfully: {}", itemCode);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (ItemNotFoundException e) {
+            logger.error("Item not found: {}", itemCode);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
+            logger.error("Internal server error: {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
