@@ -47,4 +47,33 @@ public class CustomerController {
         }
     }
 
+    @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> updateCustomer(
+            @PathVariable("id") String id,
+            @RequestPart("updateName") String updateName,
+            @RequestPart("updateAddress") String updateAddress,
+            @RequestPart("updateMobile") String updateMobile,
+            @RequestPart("updateProfilePic") MultipartFile updateProfilePic
+    ) {
+        try {
+            byte[] imageBytes = updateProfilePic.getBytes();
+            String updateBase64ProfilePic = AppUtil.toBase64ProfilePic(imageBytes);
+
+            var updateCustomer = new CustomerDTO();
+            updateCustomer.setId(id);
+            updateCustomer.setName(updateName);
+            updateCustomer.setAddress(updateAddress);
+            updateCustomer.setMobile(updateMobile);
+            updateCustomer.setProfilePic(updateBase64ProfilePic);
+
+            customerService.updateCustomer(updateCustomer);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (CustomerNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }
