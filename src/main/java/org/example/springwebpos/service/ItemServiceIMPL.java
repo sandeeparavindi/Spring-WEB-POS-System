@@ -11,6 +11,8 @@ import org.example.springwebpos.exception.DataPersistFailedException;
 import org.example.springwebpos.exception.ItemNotFoundException;
 import org.example.springwebpos.util.AppUtil;
 import org.example.springwebpos.util.Mapping;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,8 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 public class ItemServiceIMPL implements ItemService {
+    private static final Logger logger = LoggerFactory.getLogger(ItemServiceIMPL.class);
+
     @Autowired
     private final ItemDAO itemDAO;
 
@@ -36,10 +40,12 @@ public class ItemServiceIMPL implements ItemService {
             ItemEntity savedItem = itemDAO.save(itemEntity);
 
             if (savedItem == null) {
+                logger.error("Failed to save item: {}", itemDTO);
                 throw new DataPersistFailedException("Failed to save item data");
             }
+            logger.info("Item saved successfully: {}", savedItem);
         } catch (Exception e) {
-            System.err.println("Error saving item: " + e.getMessage());
+            logger.error("Error saving item: {}", e.getMessage());
             throw new DataPersistFailedException("Cannot save item data: " + e.getMessage());
         }
     }

@@ -1,6 +1,5 @@
 package org.example.springwebpos.service;
 
-import org.example.springwebpos.customObj.CustomerResponse;
 import org.example.springwebpos.customObj.ItemResponse;
 import org.example.springwebpos.dto.ItemDTO;
 

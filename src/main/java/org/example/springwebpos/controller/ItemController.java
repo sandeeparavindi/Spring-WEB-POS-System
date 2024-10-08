@@ -6,6 +6,8 @@ import org.example.springwebpos.dto.ItemDTO;
 import org.example.springwebpos.exception.DataPersistFailedException;
 import org.example.springwebpos.exception.ItemNotFoundException;
 import org.example.springwebpos.service.ItemService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,22 +20,27 @@ import java.util.List;
 @RequestMapping("/api/v1/items")
 @RequiredArgsConstructor
 public class ItemController {
+
+    private static final Logger logger = LoggerFactory.getLogger(ItemController.class);
+
     @Autowired
     private ItemService itemService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createItem(@RequestBody ItemDTO item) {
         if (item == null || item.getDescription() == null || item.getPrice() <= 0 || item.getQty() < 0) {
+            logger.warn("Invalid item data: {}", item);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
             itemService.saveItem(item);
+            logger.info("Item created successfully: {}", item);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (DataPersistFailedException e) {
-            System.err.println("Data persistence failed: " + e.getMessage());
+            logger.error("Data persistence failed: {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            System.err.println("Internal server error: " + e.getMessage());
+            logger.error("Internal server error: {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -67,7 +74,7 @@ public class ItemController {
     }
 
     @GetMapping(value = "/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ItemResponse getSelecteItem(@PathVariable ("code") String code)  {
+    public ItemResponse getSelectedItem(@PathVariable ("code") String code)  {
         return itemService.getSelectedItem(code);
     }
 
