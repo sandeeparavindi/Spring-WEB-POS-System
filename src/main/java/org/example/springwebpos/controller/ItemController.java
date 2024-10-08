@@ -1,11 +1,8 @@
 package org.example.springwebpos.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.springwebpos.customObj.CustomerResponse;
 import org.example.springwebpos.customObj.ItemResponse;
-import org.example.springwebpos.dto.CustomerDTO;
 import org.example.springwebpos.dto.ItemDTO;
-import org.example.springwebpos.exception.CustomerNotFoundException;
 import org.example.springwebpos.exception.DataPersistFailedException;
 import org.example.springwebpos.exception.ItemNotFoundException;
 import org.example.springwebpos.service.ItemService;
@@ -42,7 +39,7 @@ public class ItemController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PatchMapping(value = "/{code}",produces = MediaType.APPLICATION_JSON_VALUE)  // http://localhost:8080/NoteTaker_war_exploded/api/v1/notes/4f8a0a67-2ebc-41b2-9de6-4e9bcdba65bb
+    @PatchMapping(value = "/{code}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateNote(@PathVariable ("code") String itemCode, @RequestBody ItemDTO item) {
         try {
             if (item == null && (itemCode == null || item.equals(""))) {

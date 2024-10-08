@@ -2,16 +2,11 @@ package org.example.springwebpos.service;
 
 
 import lombok.RequiredArgsConstructor;
-import org.example.springwebpos.customObj.CustomerErrorResponse;
-import org.example.springwebpos.customObj.CustomerResponse;
 import org.example.springwebpos.customObj.ItemErrorResponse;
 import org.example.springwebpos.customObj.ItemResponse;
 import org.example.springwebpos.dao.ItemDAO;
 import org.example.springwebpos.dto.ItemDTO;
-
-import org.example.springwebpos.entity.CustomerEntity;
 import org.example.springwebpos.entity.ItemEntity;
-import org.example.springwebpos.exception.CustomerNotFoundException;
 import org.example.springwebpos.exception.DataPersistFailedException;
 import org.example.springwebpos.exception.ItemNotFoundException;
 import org.example.springwebpos.util.AppUtil;
