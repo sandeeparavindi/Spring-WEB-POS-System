@@ -2,6 +2,7 @@ package org.example.springwebpos.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.springwebpos.dto.ItemDTO;
+import org.example.springwebpos.exception.CustomerNotFoundException;
 import org.example.springwebpos.exception.DataPersistFailedException;
 import org.example.springwebpos.exception.ItemNotFoundException;
 import org.example.springwebpos.service.ItemService;
@@ -43,6 +44,18 @@ public class ItemController {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             itemService.updateItem(itemCode, item);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (ItemNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/{code}")
+    public ResponseEntity<Void> deleteItem(@PathVariable("code") String code) {
+        try {
+            itemService.deleteItem(code);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (ItemNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -6,7 +6,9 @@ import org.example.springwebpos.customObj.CustomerResponse;
 import org.example.springwebpos.dao.ItemDAO;
 import org.example.springwebpos.dto.ItemDTO;
 
+import org.example.springwebpos.entity.CustomerEntity;
 import org.example.springwebpos.entity.ItemEntity;
+import org.example.springwebpos.exception.CustomerNotFoundException;
 import org.example.springwebpos.exception.DataPersistFailedException;
 import org.example.springwebpos.exception.ItemNotFoundException;
 import org.example.springwebpos.util.AppUtil;
@@ -58,7 +60,12 @@ public class ItemServiceIMPL implements ItemService {
 
     @Override
     public void deleteItem(String code) {
-
+        Optional<ItemEntity> selectedId = itemDAO.findById(code);
+        if (!selectedId.isPresent()) {
+            throw new ItemNotFoundException("Item not found");
+        } else {
+            itemDAO.deleteById(code);
+        }
     }
 
     @Override
