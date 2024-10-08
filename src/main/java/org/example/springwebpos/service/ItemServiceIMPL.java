@@ -8,6 +8,7 @@ import org.example.springwebpos.dto.ItemDTO;
 
 import org.example.springwebpos.entity.ItemEntity;
 import org.example.springwebpos.exception.DataPersistFailedException;
+import org.example.springwebpos.exception.ItemNotFoundException;
 import org.example.springwebpos.util.AppUtil;
 import org.example.springwebpos.util.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -28,7 +31,6 @@ public class ItemServiceIMPL implements ItemService {
     @Override
     public void saveItem(ItemDTO itemDTO) {
         itemDTO.setCode(AppUtil.createItemCode());
-
         try {
             ItemEntity itemEntity = mapping.convertToItemEntity(itemDTO);
             ItemEntity savedItem = itemDAO.save(itemEntity);
@@ -43,8 +45,15 @@ public class ItemServiceIMPL implements ItemService {
     }
 
     @Override
-    public void updateItem(ItemDTO itemDTO) {
-
+    public void updateItem(String code, ItemDTO itemDTO) {
+        Optional<ItemEntity> tmpItemEntity= itemDAO.findById(code);
+        if(!tmpItemEntity.isPresent()){
+            throw new ItemNotFoundException("Item not found");
+        }else {
+            tmpItemEntity.get().setDescription(itemDTO.getDescription());
+            tmpItemEntity.get().setPrice(itemDTO.getPrice());
+            tmpItemEntity.get().setQty(itemDTO.getQty());
+        }
     }
 
     @Override
