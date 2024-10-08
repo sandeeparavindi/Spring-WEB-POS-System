@@ -1,6 +1,8 @@
 package org.example.springwebpos.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.springwebpos.customObj.CustomerResponse;
+import org.example.springwebpos.customObj.ItemResponse;
 import org.example.springwebpos.dto.ItemDTO;
 import org.example.springwebpos.exception.CustomerNotFoundException;
 import org.example.springwebpos.exception.DataPersistFailedException;
@@ -62,6 +64,11 @@ public class ItemController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping(value = "/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ItemResponse getSelecteItem(@PathVariable ("code") String code)  {
+        return itemService.getSelectedItem(code);
     }
 
 }

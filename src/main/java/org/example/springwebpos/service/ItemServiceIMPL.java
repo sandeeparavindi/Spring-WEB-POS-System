@@ -2,7 +2,10 @@ package org.example.springwebpos.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.example.springwebpos.customObj.CustomerErrorResponse;
 import org.example.springwebpos.customObj.CustomerResponse;
+import org.example.springwebpos.customObj.ItemErrorResponse;
+import org.example.springwebpos.customObj.ItemResponse;
 import org.example.springwebpos.dao.ItemDAO;
 import org.example.springwebpos.dto.ItemDTO;
 
@@ -69,8 +72,12 @@ public class ItemServiceIMPL implements ItemService {
     }
 
     @Override
-    public CustomerResponse getSelectedItem(String code) {
-        return null;
+    public ItemResponse getSelectedItem(String code) {
+        if(itemDAO.existsById(code)){
+            return mapping.convertToItemDTO(itemDAO.getReferenceById(code));
+        }else {
+            return new ItemErrorResponse(0,"Item not found");
+        }
     }
 
     @Override
