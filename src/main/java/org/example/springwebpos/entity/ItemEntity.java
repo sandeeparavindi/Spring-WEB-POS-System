@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -19,5 +20,5 @@ public class ItemEntity implements SuperEntity {
     private double price;
     private int qty;
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderDetailEntity> orderDetails;
+    private List<OrderDetailEntity> orderDetails = new ArrayList<>();
 }

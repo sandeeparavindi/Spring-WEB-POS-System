@@ -1,5 +1,6 @@
 package org.example.springwebpos.util;
 
+import lombok.RequiredArgsConstructor;
 import org.example.springwebpos.dto.CustomerDTO;
 import org.example.springwebpos.dto.ItemDTO;
 import org.example.springwebpos.dto.OrderDTO;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class Mapping {
     @Autowired
     private ModelMapper modelMapper;
