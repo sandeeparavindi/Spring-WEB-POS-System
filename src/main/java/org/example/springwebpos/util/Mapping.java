@@ -1,8 +1,10 @@
 package org.example.springwebpos.util;
 
 import org.example.springwebpos.dto.CustomerDTO;
+import org.example.springwebpos.dto.ItemDTO;
 import org.example.springwebpos.dto.OrderDTO;
 import org.example.springwebpos.entity.CustomerEntity;
+import org.example.springwebpos.entity.ItemEntity;
 import org.example.springwebpos.entity.OrderEntity;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -16,17 +18,17 @@ public class Mapping {
     @Autowired
     private ModelMapper modelMapper;
 
-    public OrderDTO convertToDTO(OrderEntity order){
+    public OrderDTO convertToOrderDTO(OrderEntity order){
         return  modelMapper.map(order, OrderDTO.class);
     }
-    public OrderEntity convertToEntity(OrderDTO dto){
+    public OrderEntity convertToOrderEntity(OrderDTO dto){
         return modelMapper.map(dto, OrderEntity.class);
     }
-    public List<OrderDTO> convertToDTO(List<OrderEntity> orders){
+    public List<OrderDTO> convertToOrderListDTO(List<OrderEntity> orders){
         return modelMapper.map(orders, new TypeToken<List<OrderDTO>>() {}.getType());
     }
 
-    //User matters mapping
+    //Customer mapping
     public CustomerEntity convertToCustomerEntity(CustomerDTO customerDTO) {
         return modelMapper.map(customerDTO, CustomerEntity.class);
     }
@@ -35,5 +37,16 @@ public class Mapping {
     }
     public List<CustomerDTO> convertCustomerListToDTO(List<CustomerEntity> customerEntities) {
         return modelMapper.map(customerEntities, new TypeToken<List<CustomerDTO>>() {}.getType());
+    }
+
+    //Item mapping
+    public ItemEntity convertToItemEntity(ItemDTO itemDTO) {
+        return modelMapper.map(itemDTO, ItemEntity.class);
+    }
+    public ItemDTO convertToItemDTO(ItemEntity itemEntity) {
+        return modelMapper.map(itemEntity, ItemDTO.class);
+    }
+    public List<ItemDTO> convertItemListToDTO(List<ItemEntity> itemEntities) {
+        return modelMapper.map(itemEntities, new TypeToken<List<ItemDTO>>() {}.getType());
     }
 }
