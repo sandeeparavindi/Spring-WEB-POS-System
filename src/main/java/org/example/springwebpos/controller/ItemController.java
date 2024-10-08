@@ -3,6 +3,7 @@ package org.example.springwebpos.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.springwebpos.customObj.CustomerResponse;
 import org.example.springwebpos.customObj.ItemResponse;
+import org.example.springwebpos.dto.CustomerDTO;
 import org.example.springwebpos.dto.ItemDTO;
 import org.example.springwebpos.exception.CustomerNotFoundException;
 import org.example.springwebpos.exception.DataPersistFailedException;
@@ -13,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/items")
@@ -69,6 +72,11 @@ public class ItemController {
     @GetMapping(value = "/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ItemResponse getSelecteItem(@PathVariable ("code") String code)  {
         return itemService.getSelectedItem(code);
+    }
+
+    @GetMapping(value = "allitems", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ItemDTO> getAllItems() {
+        return itemService.getAllItems();
     }
 
 }

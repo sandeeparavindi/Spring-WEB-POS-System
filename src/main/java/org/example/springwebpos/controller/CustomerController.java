@@ -96,7 +96,7 @@ public class CustomerController {
     }
 
     @GetMapping(value = "allcustomers", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<CustomerDTO> getAllNotes(){
+    public List<CustomerDTO> getAllCustomers(){
         return customerService.getAllCustomers();
     }
 
