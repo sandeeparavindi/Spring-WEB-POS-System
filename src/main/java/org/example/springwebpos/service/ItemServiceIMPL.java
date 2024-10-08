@@ -68,23 +68,28 @@ public class ItemServiceIMPL implements ItemService {
     public void deleteItem(String code) {
         Optional<ItemEntity> selectedId = itemDAO.findById(code);
         if (!selectedId.isPresent()) {
+            logger.warn("Item not found for deletion: {}", code);
             throw new ItemNotFoundException("Item not found");
         } else {
             itemDAO.deleteById(code);
+            logger.info("Item deleted: {}", code);
         }
     }
 
     @Override
     public ItemResponse getSelectedItem(String code) {
-        if(itemDAO.existsById(code)){
+        if (itemDAO.existsById(code)) {
+            logger.info("Fetching item details for: {}", code);
             return mapping.convertToItemDTO(itemDAO.getReferenceById(code));
-        }else {
-            return new ItemErrorResponse(0,"Item not found");
+        } else {
+            logger.warn("Item not found: {}", code);
+            return new ItemErrorResponse(0, "Item not found");
         }
     }
 
     @Override
     public List<ItemDTO> getAllItems() {
+        logger.info("Fetching all items");
         return mapping.convertItemListToDTO(itemDAO.findAll());
     }
 }

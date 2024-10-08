@@ -1,6 +1,7 @@
 package org.example.springwebpos.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.springwebpos.customObj.ItemErrorResponse;
 import org.example.springwebpos.customObj.ItemResponse;
 import org.example.springwebpos.dto.ItemDTO;
 import org.example.springwebpos.exception.DataPersistFailedException;
@@ -69,21 +70,31 @@ public class ItemController {
     public ResponseEntity<Void> deleteItem(@PathVariable("code") String code) {
         try {
             itemService.deleteItem(code);
+            logger.info("Item deleted successfully: {}", code);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (ItemNotFoundException e) {
+            logger.error("Item not found: {}", code);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
+            logger.error("Internal server error: {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping(value = "/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ItemResponse getSelectedItem(@PathVariable ("code") String code)  {
-        return itemService.getSelectedItem(code);
+        ItemResponse itemResponse = itemService.getSelectedItem(code);
+        if (itemResponse instanceof ItemErrorResponse) {
+            logger.warn("Item not found: {}", code);
+        } else {
+            logger.info("Fetched item details for: {}", code);
+        }
+        return itemResponse;
     }
 
     @GetMapping(value = "allitems", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ItemDTO> getAllItems() {
+        logger.info("Fetching all items");
         return itemService.getAllItems();
     }
 
