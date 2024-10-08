@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/customers")
 @RequiredArgsConstructor
@@ -91,6 +93,11 @@ public class CustomerController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CustomerResponse getSelectedCustomer(@PathVariable ("id") String id)  {
         return customerService.getSelectedCustomer(id);
+    }
+
+    @GetMapping(value = "allcustomers", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<CustomerDTO> getAllNotes(){
+        return customerService.getAllCustomers();
     }
 
 }
