@@ -1,7 +1,6 @@
 package org.example.springwebpos.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.springwebpos.controller.OrderController;
 import org.example.springwebpos.dao.CustomerDAO;
 import org.example.springwebpos.dao.ItemDAO;
 import org.example.springwebpos.dao.OrderDAO;
