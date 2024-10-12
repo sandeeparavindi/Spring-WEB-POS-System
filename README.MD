@@ -57,7 +57,7 @@ This application follows a well-organized, layered architecture:
 
 ## License
 
-### [MIT](./LICENSE) License
+### [MIT](https://github.com/sandeeparavindi/Spring-WEB-POS-System/edit/master/License.txt) License
 
 ## Copyright
 
