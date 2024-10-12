@@ -198,13 +198,13 @@ public class CustomerController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public CustomerResponse getSelectedCustomer(@PathVariable ("id") String id)  {
+    public CustomerResponse getSelectedCustomer(@PathVariable("id") String id) {
         logger.info("Received request to get selected customer with ID: {}", id);
         return customerService.getSelectedCustomer(id);
     }
 
     @GetMapping(value = "allcustomers", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<CustomerDTO> getAllCustomers(){
+    public List<CustomerDTO> getAllCustomers() {
         logger.info("Received request to get all customers");
         return customerService.getAllCustomers();
     }

@@ -80,7 +80,7 @@ public class ItemController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PatchMapping(value = "/{code}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ItemErrorResponse> updateItem(
             @PathVariable("code") String itemCode, @RequestBody ItemDTO item) {
         try {
@@ -150,7 +150,7 @@ public class ItemController {
     }
 
     @GetMapping(value = "/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ItemResponse getSelectedItem(@PathVariable ("code") String code)  {
+    public ItemResponse getSelectedItem(@PathVariable("code") String code) {
         ItemResponse itemResponse = itemService.getSelectedItem(code);
         if (itemResponse instanceof ItemErrorResponse) {
             logger.warn("Item not found: {}", code);

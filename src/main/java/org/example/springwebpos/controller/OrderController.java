@@ -30,5 +30,4 @@ public class OrderController {
         logger.info("Order placed for customer ID: {}", placedOrder.getCustomerId());
         return new ResponseEntity<>(placedOrder, HttpStatus.CREATED);
     }
-
 }
