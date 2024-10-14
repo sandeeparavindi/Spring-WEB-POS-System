@@ -9,6 +9,7 @@ import org.example.springwebpos.entity.CustomerEntity;
 import org.example.springwebpos.entity.ItemEntity;
 import org.example.springwebpos.entity.OrderDetailEntity;
 import org.example.springwebpos.entity.OrderEntity;
+import org.example.springwebpos.exception.InsufficientCashException;
 import org.example.springwebpos.util.AppUtil;
 import org.example.springwebpos.util.Mapping;
 import org.slf4j.Logger;
@@ -106,6 +107,11 @@ public class OderServiceIMPL implements OrderService {
         double balance = cash - total;
         orderEntity.setBalance(balance);
         logger.debug("Calculated balance: {}", balance);
+
+        if (balance < 0) {
+            logger.warn("Insufficient cash for the order. Order cannot be placed.");
+            throw new InsufficientCashException("Insufficient cash. Order cannot be placed.");
+        }
 
         if (subTotal > 0 && discountAmount > 0) {
             for (OrderDetailEntity detail : orderDetails) {
