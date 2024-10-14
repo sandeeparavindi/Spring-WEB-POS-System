@@ -62,7 +62,7 @@ public class OderServiceIMPL implements OrderService {
                         logger.error("Item ID {} not found", orderDetailDTO.getItemCode());
                         return new RuntimeException("Item not found with code: " + orderDetailDTO.getItemCode());
                     });
-            logger.debug("Found item: {}", item.getDescription());
+            logger.debug("Found item: {} with price {}", item.getDescription(), item.getPrice());
 
             if (item.getQty() < orderDetailDTO.getQuantity()) {
                 logger.error("Insufficient quantity for item: {} (requested: {}, available: {})",
@@ -74,11 +74,12 @@ public class OderServiceIMPL implements OrderService {
             logger.info("Updated item quantity for item: {}. New quantity: {}", item.getCode(), item.getQty());
             itemDAO.save(item);
 
+            double unitPrice = item.getPrice();
             orderDetail.setItem(item);
             orderDetail.setQuantity(orderDetailDTO.getQuantity());
-            orderDetail.setUnitPrice(orderDetailDTO.getUnitPrice());
+            orderDetail.setUnitPrice(unitPrice);
 
-            double detailSubtotal = orderDetailDTO.getQuantity() * orderDetailDTO.getUnitPrice();
+            double detailSubtotal = orderDetailDTO.getQuantity() * unitPrice;
             orderDetail.setTotalPrice(detailSubtotal);
 
             return orderDetail;
@@ -116,6 +117,7 @@ public class OderServiceIMPL implements OrderService {
                         detail.getId(), detail.getTotalPrice() + detailDiscount, finalDetailTotal);
             }
         }
+
         OrderEntity savedOrder = orderDAO.save(orderEntity);
         logger.info("Saved order: {}", savedOrder.getOrderId());
 
